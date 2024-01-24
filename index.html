@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pdf to html</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div style="width: 1135px;height: 5px;background-color: black;"></div>
+    <h1> Appendix D. Launching and Using the NetView Management Console from Other Applications</h1>
+    <p style="text-align: justify;"> This appendix describes how to launch and use the NetView management console from other 
+        applications using servlets, command-line programs, and scripts provided with the NetView management console. 
+        It includes information about the servlets, setting up the NetView management console to use the servlets,
+         and the command-line programs that call the servlets.</p>
+         <div style="width: 1135px;height: 1px;background-color: black;"></div>
+    <h2> Servlets</h2>
+    <p style="text-align: justify;"> Two servlets provided with the NetView management console can be used by other applications:</p>
+<ul> 
+    <li>
+         <p  style="text-align: justify;">The check-web-server servlet, <b>IhsRunning, </b>enables other applications to check whether the NetView management console web server is running.
+        </p>
+    </li>
+    <li>
+    <p  style="text-align: justify;">The locate-resource servlet, <b>IhsLocRes,</b> enables other applications to have the 
+        NetView management console locate a specific resource. If the resource is found, a view containing the specified resource 
+        is opened on the NetView management console topology console to which the request is sent.
+
+    </p>
+     </li>
+    </ul>
+    <p  style="text-align: justify;">The default security access for each servlet can be overridden with a <i>servlet_name.</i>
+        access attribute in the defaultscheme.properties file. The defaultscheme.properties file is located on the NetView management 
+        console topology server in the following directory: <installRoot>\bin\<interp>\TDS\ Server\db\current\settings.</p>
+<p  style="text-align: justify;">
+    The values for servlet security access are shown in Table 59, where: <br>
+    <b> local</b> &nbsp;&nbsp;&nbsp;&nbsp;Indicates that the servlet can be run only from the local host. <br>
+    <b> any</b> &nbsp;&nbsp;&nbsp;&nbsp;Indicates that the servlet can be run from any host.<br>
+    <b> disabled</b>&nbsp;&nbsp;&nbsp;&nbsp;Indicates that the servlet cannot be run.
+    </p>
+
+<p style="text-align: justify;"> <i> Table 59. Changing servlet security access
+</i></p>
+<div class="container">
+    <img src="changing servlet security access.png" alt="changing servlet security access">
+</div><br>
+
+<div style="width: 1135px;height: 1px;background-color: black;"></div>
+<h2> setup</h2>
+<p style="text-align: justify;"> For other applications to use the servlets to launch the NetView management console:</p>
+<ol type="1">
+    <li> The NetView management console must be started.</li>
+    <li>	The web server must be started in one of these ways: </li>
+<ul>
+    <li> Checking the <b>Automatically start web server</b> check box on the Web Server page in the Console Properties notebook</li>
+    <li> Using the <b>http </b>parameter with <b>tconsolexx </b>to force the starting of the web server; for more information, see “tconsolexx” on page 123.</li>
+    <li> Clicking on the <b>Start web server now</b> button on the Web Server page in the Console Properties notebook.</li>
+</ul>
+</ol>
+<div style="width: 1135px;height: 1px;background-color: black;"></div>
+<h2> Using the Servlets</h2>
+<p style="text-align: justify;"> This section describes the syntax for using the servlets directly, and the programs that provide a front end to using the servlets.
+
+</p>
+<h2> IhsLocRes Servlet</h2>
+<h3>format </h3>
+<h4> IhsLocRes Servlet</h4>
+<div class="container">
+    <img src="Format.png" alt="format">
+</div>
+<h4> Notes:</h4>
+<ol type="1">
+    <li> The name and display parameters can be in any order.</li>
+</ol>
+<h3> Purpose</h3>
+<p>This is an HTTP get request that uses the <b>IhsLocRes</b> servlet to locate a resource.</p>
+<h3> Parameters</h3>
+<h4><i> local_host:port_number</i></h4>
+<p> Specifies the host name and port number of the NetView management console web server.</p>
+<h4> com.tivoli.ihs.servlet.IhsLocRes</h4>
+<p> Specifies the <b>IhsLocRes</b> servlet.</p>
+<h4>name=<i>res_name</i></h4>
+<p> Specifies the name of the resource to be located.</p>
+<h4> display=<i>display_ID</i></h4>
+<p> Specifies the display ID of the NetView management console. 
+    This parameter is required for AIX or Linux systems, and must match
+     the <i>DISPLAY</i> environment variable on the AIX or Linux system.</p>
+<h4> HTTP/1.0</h4>
+<p> If specified, indicates that response codes are to be returned.</p>
+<h3> Return codes</h3>
+<p> If the HTTP/1.0 parameter is used, these response codes can be returned:</p>
+<p> <b> 200</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request has been accepted.</p>
+<p> <b> 400</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The required servlet name was not specified or an incorrect value was specified.</p>
+<p> <b> 403</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The request was not made from the NetView management console host system or the NetView management console is currently disabled.</p>
+<p> <b> 409</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The display ID specified does not match the display ID of the NetView management console.</p>
+<p> <b> 500</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; An internal error occurred.</p>
+<h2> IhsRunning Servlet</h2>
+<h3> Format</h3>
+<h4> IhsRunning</h4>
+<div class="container">
+    <img src="format1.png" alt="format1">
+</div>
+<h3> Purpose</h3>
+<p> This is an HTTP get request that uses the <b>IhsRunning</b> servlet to check whether or not the NetView
+     management console web server is running.</p>
+<h3> Parameters</h3>
+<p><i> local_host:port_number</i><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Specifies the host name and port number of the NetView management console web server.</p>
+<p><b>com.tivoli.ihs.servlet.IhsRunning</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Specifies the IhsRunning servlet.</p>
+<p><b> display=</b><i> display_ID</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Specifies the display ID of the NetView management console. This parameter is required for AIX or Linux systems, 
+and must match the <i>DISPLAY</i> environment variable on the AIX or Linux system. </p>
+<p><b> HTTP/1.0</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;If specified, indicates that response codes are to be returned.</p>
+<h3> Return codes</h3>
+<p> If the HTTP/1.0 parameter is used, these response codes can be returned:</p>
+<p> <b> 200</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The NetView management console web server is running. </p>
+<p> <b> 403</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request was not made from the NetView management console host system or the NetView management console web server is currently disabled.  </p>
+<p> <b> 409</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The display ID specified does not match the display ID of the NetView management console.</p>
+<h2> locRes Java Class</h2>
+<h3> Format</h3>
+<p> <b> LocRes</b></p>
+<div class="container">
+    <img src="format2.png" alt="format2">
+</div>
+<h3>Purpose</h3>
+<p> The <b>locRes</b> Java class uses the <b>IhsLocRes</b> servlet to locate a resource.</p>
+<h3>Parameters</h3>
+<p><b>–Dverbose</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Specifies that debugging information, including the return code, is to be printed.</p>
+<p> <b> com.tivoli.ihs.cli.locRes</b><br> 
+&nbsp;&nbsp;&nbsp;&nbsp;Specifies the <b>locRes</b> Java class, which uses the <b>IhsLocRes</b> servlet.</p>
+<p> <i> resource_name</i><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;  Specifies the name of the resource to be located.
+</p><i>port_number </i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Specifies the port number of the NetView management console web server. The default is port 80.</p>
+<h3> Return codes</h3>
+<p> 0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request was accepted.</p>
+<p> 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request was rejected because the web server is not running, access is denied, or the resource name is not valid.</p>
+<p> 2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A command-line argument is in error.</p>
+<h3> Usage</h3>
+<p> This program is started from the command line or can be run using the <b>tappxx</b> scripts; 
+    for information about <b>tappxx,</b> see “tappxx” on page 125. To use the Java command, you must install your own Java environment.</p>
+<p> If you use the <b>tappxx</b> script, the <b>–Dverbose</b> parameter must be specified with the
+    <b>TCONSOLE_JAVAOPTS</b> environment variable, rather than on the command line.
+    </p>
+<h2> nmcRunning Java Class</h2>
+<h3> Format</h3>
+<b>nmcRunning</b>
+<div class="container">
+    <img src="format3.png" alt="format3">
+</div>
+<h3> Purpose</h3>
+<p>The <b>nmcRunning </b>Java class uses the <b>IhsRunning</b> servlet to check whether the NetView management console web server is running.</p>
+<h3> Parameters</h3>
+<p> <b> –Dverbose</b><br> 
+    &nbsp;&nbsp;&nbsp;&nbsp;Specifies that debugging information, including the return code, is to be printed.</p>
+<p><b> –Dpoll</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp; Specifies that the program is to poll 10 times before stopping. A ten-second wait occurs between each poll. If this parameter is not specified, the program polls only once.</p>
+<p> <b> com.tivoli.ihs.cli.nmcRunning</b><br> 
+    &nbsp;&nbsp;&nbsp;&nbsp;Specifies the <b>nmcRunning</b> program, which uses the <b>IhsRunning</b> servlet.</p>
+<p><i> port_number</i><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;Specifies the port number of the NetView management console web server. The default is port 80.</p>
+    <h3> Return codes</h3>
+    <p> 0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The request was accepted.</p>
+<p> 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	The request was rejected because the web server is not running or access is denied.</p>
+<p> 2 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A command-line argument is in error.</p>
+<h3>usage</h3>
+<p> This program is started from the command line or can be run using the <b>tappxx</b> scripts; for information about <b>tappxx, </b>
+    see “tappxx” on page 125. To use the Java command, you must install your own Java environment.</p>
+    <p> If you use the <b>tappxx</b> script, the <b>–D</b> parameters must be specified with the
+        <b>TCONSOLE_JAVAOPTS</b> environment variable, rather than on the command line.
+        </p>
+<h2> tlocResxx Script</h2>
+<h3> Format</h3>
+<p><b> tlocResxx</b></p>
+<div class="container">
+    <img src="format4.png" alt="format4">
+</div>
+<h3> Purpose</h3>
+<p> This script submits a locate-resource request to the NetView management console web server, starting 
+    the NetView management console topology console, if necessary, with the appropriate <b>tconsolexx</b> script.
+     The possible values for xx are:</p>
+     <p> <b> NT</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Windows systems</p>
+     <P> <b> .sh</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AIX or Linux systems</P>
+     <h3> Parameters</h3>
+     <p> <i> path</i> <br> 
+        &nbsp;&nbsp;&nbsp;&nbsp;Specifies the top level of the topology console installation path:
+        <li>For Windows systems: %BINDIR%\..\generic_unix\TDS\client </li>
+        <li> For AIX or Linux systems: $BINDIR/../generic_unix/TDS/client</li></p>
+<P><i>port_number</i><br>
+    &nbsp;&nbsp;&nbsp;&nbsp; Specifies the port number of the NetView management console web server.</P>
+<p> <i>resource_name</i><br>
+    &nbsp;&nbsp;&nbsp;&nbsp; Specifies the name of the resource to be located.</p>    
+<p> <b> Note: </b>  &nbsp;&nbsp;&nbsp;If the % (percent sign) character is included in the string for the resource name, 
+    you need to include two percent sign (%%) characters as the first is removed on the Windows platform.<br>
+    <b><i> args</i></b><br> 
+    &nbsp;&nbsp;&nbsp;&nbsp;Specifies optional <b>tconsolexx</b> start-up arguments. 
+    These arguments are used if the NetView management console topology console has to be started.</p>
+<h3> Usage</h3>
+<p> This script supports the following optional environment variables:</p>
+<p> <b> TCONSOLE_BACKDOOR</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java code libraries placed at the front of CLASSPATH. This option is for IBM Software Support only.</p>
+<p><b> TCONSOLE_CLASSPATH</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java code libraries placed at the end of CLASSPATH. Typically, this is used 
+    to define other Java classes to be accessed by the NetView management console topology console. </p>
+<p><b> TCONSOLE_JAVAOPTS</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Command-line arguments for the Java program. This option is for IBM Software Support only.</p>
+    <div style="width: 1135px;height: 5px;background-color: black;"></div>
+<h1> Appendix E. Sending Commands to Multiple NetView Domains</h1>
+<p style="text-align: justify;"> When sending certain commands from the topology console, such as <b> Activate, Inactivate,</b> or <b>Recycle,</b>
+    to the NetView host, there might be more than one NetView domain to run the command against. This occurs only when you select a
+     Systems Network Architecture topology manager resource with a command indicator value of 32769 and the command is to be run at 
+     the NetView program using the IHSXTHCE command exit. For example, when you select an SNA topology manager resource against which 
+     to issue a command, more than one NetView domain might be monitoring that resource. In this case, a multiple domain dialog box is 
+     displayed, so you can select one or more NetView domains. The following example shows the multiple domain dialog box.</p>
+     <div class="container">
+        <img src="Appendix E.png" alt="Appendix E">
+    </div>
+    <p style="text-align: center;"><i> Figure 20. Multiple Domain Dialog Box Example
+</i></p>
+<p> You can also specify one or more NetView domains as a default. In this case, when a command is issued against a resource, 
+    only the NetView domains specified as the default receive the command.</p>
+<p> To specify a NetView domain as the default, follow these steps:
+    <ol type="1">
+    <li> Create one or more files named: </li>
+    <ul> <li> <b>userMultiDom.properties</b> where user is the user name of an operator. Use this file if you want to specify one or more 
+        NetView domains as a default for a specific operator.</li>
+    <li><b> DefaultMultiDom.properties </b>  to specify one or more NetView domains as the default for all operators.</li>
+
+    </ul>
+    <p> The following example shows these properties:<br>
+        autoSelect.1 = NTA09 <br>
+        autoSelect.2 = NTM12 <br>
+        autoSelect.3 = NTM13 <br>
+        autoSend = true<br>
+        When autoSend = true, commands are run on the NetView domains specified in the properties file without any operator 
+        interaction (the multiple domain dialog box is not displayed). All other NetView domains are ignored. A value
+        of autoSend = false indicates that the multiple domain dialog box should be displayed for the operator with the domains 
+        specified in the properties file automatically selected.</p>
+    <li> Store these files on the topology server workstation in one of the following directories:</li>
+    <ul> <li> For Windows systems: %BINDIR%\TDS\server\db\current\settings</li>
+    <li> For AIX or Linux systems: $BINDIR/TDS/server/db/current/settings</li></ul>
+    
+
+    </ol>
+</p>
+
+        </body>
+</html>
